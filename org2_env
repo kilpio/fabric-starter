@@ -1,0 +1,10 @@
+export ORG=org2
+export DOMAIN=example.com
+
+export MY_IP=192.168.112.102
+export BOOTSTRAP_IP=192.168.112.101
+
+export ORDERER_TYPE=RAFT
+
+export ENROLL_SECRET=adminpw
+
