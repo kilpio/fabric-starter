@@ -169,6 +169,7 @@ services:
     - ${FABRIC_STARTER_HOME:-.}/crypto-config/peerOrganizations/${ORG:-org1}.${DOMAIN:-example.com}/peers/peer0.${ORG:-org1}.${DOMAIN:-example.com}/:/etc/hyperledger/crypto/peer
     - peer0:/var/hyperledger/production
     - ${FABRIC_STARTER_HOME:-.}/crypto-config/hosts:/etc/hosts
+    - ${FABRIC_STARTER_HOME:-.}/chaincode:/opt/chaincode
     - /var/run/docker.sock:/host/var/run/docker.sock
 
 #  peer1:

@@ -752,6 +752,50 @@ function installTestChiancodeCLI() {
 }
 
 
+function copyTestChiancodeCLI_A() {
+    local channel=${1}
+    local org=${2}
+    local chaincode_init_name=${3}
+    local chaincode_full_path=${4}
+    
+    local result
+    local exitCode
+    pushd ${FABRIC_DIR} > /dev/null
+    
+    result=$(ORG=${org} runCLI \
+        "mkdir -p /opt/chaincode/java/${chaincode_init_name} ;\
+    cp ${chaincode_full_path} /opt/chaincode/java/")
+    exitCode=$?
+    printDbg "${result}"
+    
+    popd > /dev/null
+    setExitCode [ "${exitCode}" = "0" ]
+}
+
+
+function installTestChiancodeCLI_A() {
+    local channel=${1}
+    local org=${2}
+    local chaincode_name=${3}
+    
+    local exitCode
+    
+    pushd ${FABRIC_DIR} > /dev/null
+    
+    ORG=${org} runCLI "./container-scripts/network/chaincode-install.sh '${chaincode_name}'" '1.0' "/opt/chaincode/java/$chaincodeName" 'java' 2>&1 | printDbg
+    local exitCode=$?
+    
+    popd > /dev/null
+    setExitCode [ "${exitCode}" = "0" ]
+}
+
+#chaincodeName=${1:?`printUsage "$usageMsg" "$exampleMsg"`}
+#version=${2-1.0}
+#path=${3-"/opt/chaincode/node/$chaincodeName"}
+#lang=${4-node}
+
+
+
 function ListPeerChaincodes() {
     local channel=${1}
     local org2_=${2}
@@ -882,6 +926,22 @@ function instantiateTestChaincodeCLI() {
     setExitCode [ "${exitCode}" = "0" ]
 }
 
+function instantiateTestChaincodeCLI_A() {
+    local channel=${1}
+    local org=${2}
+    local chaincode_name=${3}
+    
+    local exitCode
+    
+    pushd ${FABRIC_DIR} > /dev/null
+    
+    result=$(ORG=${org} runCLI "./container-scripts/network/chaincode-instantiate.sh ${channel} ${chaincode_name}")
+    exitCode=$?
+    
+    printDbg "${result}"
+    popd > /dev/null
+    setExitCode [ "${exitCode}" = "0" ]
+}
 
 function guessDomain() {
     echo $(docker ps --filter 'ancestor=hyperledger/fabric-orderer' --format "table {{.Names}}" | tail -n+2 | sed -e 's/orderer\.//')
